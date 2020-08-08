@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="WPF," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="参考:WPF 编程宝典https:&#x2F;&#x2F;docs.microsoft.com&#x2F;zh-cn&#x2F;previous-versions&#x2F;dotnet&#x2F;netframework-4.0&#x2F;ms750612(v&#x3D;vs.100) 绑定模式  名称 说明   OneWay  绑定导致对源属性的更改会自动更新目标属性，但是对目标属性的更改不会传播回源属性。 此绑定类型适用于绑定的控件为隐式只读控件的情况。   TwoW">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WPF 绑定">
+<meta property="og:url" content="https://w20150427.github.io/2020/08/08/WPF-6/index.html">
+<meta property="og:site_name" content="王斌的博客">
+<meta property="og:description" content="参考:WPF 编程宝典https:&#x2F;&#x2F;docs.microsoft.com&#x2F;zh-cn&#x2F;previous-versions&#x2F;dotnet&#x2F;netframework-4.0&#x2F;ms750612(v&#x3D;vs.100) 绑定模式  名称 说明   OneWay  绑定导致对源属性的更改会自动更新目标属性，但是对目标属性的更改不会传播回源属性。 此绑定类型适用于绑定的控件为隐式只读控件的情况。   TwoW">
+<meta property="article:published_time" content="2020-08-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-08-08T07:02:20.919Z">
+<meta property="article:author" content="wang bin">
+<meta property="article:tag" content="WPF">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://w20150427.github.io/2020/08/08/WPF-6/"/>
+
+
+
+
+
+  <title>WPF 绑定 | 王斌的博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">王斌的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">wang bin's blog</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://w20150427.github.io/2020/08/08/WPF-6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="wang bin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="王斌的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">WPF 绑定</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-08T00:00:00+08:00">
+                2020-08-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/WPF/" itemprop="url" rel="index">
+                    <span itemprop="name">WPF</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <a id="more"></a>
+<p>参考:WPF 编程宝典<br><a href="https://docs.microsoft.com/zh-cn/previous-versions/dotnet/netframework-4.0/ms750612(v=vs.100)" target="_blank" rel="noopener">https://docs.microsoft.com/zh-cn/previous-versions/dotnet/netframework-4.0/ms750612(v=vs.100)</a></p>
+<h1 id="绑定模式"><a href="#绑定模式" class="headerlink" title="绑定模式"></a><span style="color:#0366d6;">绑定模式</span></h1><table style="color:#0065b3;width:100%;border:0px;" >
+<tr>
+<td style="width:15%;border-left:0px;border-right:0px;color:black;font-weight:bold;">名称</td>
+<td style="width:85%;border-left:0px;border-right:0px;color:black;font-weight:bold;">说明</td>
+</tr>
+<tr>
+<td style="width:15%;border-left:0px;color:#0065b3;border-right:0px;">OneWay </td>
+<td style="width:85%;border-left:0px;color:black;border-right:0px;">绑定导致对源属性的更改会自动更新目标属性，但是对目标属性的更改不会传播回源属性。 此绑定类型适用于绑定的控件为隐式只读控件的情况。</td>
+</tr>
+<tr>
+<td style="width:15%;border-left:0px;color:#0065b3;border-right:0px;">TwoWay</td>
+<td style="width:85%;border-left:0px;color:black;border-right:0px;">绑定导致对源属性的更改会自动更新目标属性，而对目标属性的更改也会自动更新源属性。 此绑定类型适用于可编辑窗体或其他完全交互式 UI 方案。 </td>
+</tr>
+<tr>
+<td style="width:15%;border-left:0px;color:#0065b3;border-right:0px;">OneWayToSource</td>
+<td style="width:85%;border-left:0px;color:black;border-right:0px;">与 OneWay 绑定相反；它在目标属性更改时更新源属性。 一个示例方案是您只需要从 UI 重新计算源值的情况。</td>
+</tr>
+<tr>
+<td style="width:15%;border-left:0px;color:#0065b3;border-right:0px;">OneTime </td>
+<td style="width:85%;border-left:0px;color:black;border-right:0px;">绑定未在图中显示，该绑定会导致源属性初始化目标属性，但不传播后续更改。 这意味着，如果数据上下文发生了更改，或者数据上下文中的对象发生了更改，则更改不会反映在目标属性中。 此绑定类型适用于以下情况：使用当前状态的快照适合使用的或数据状态实际为静态的数据。</td>
+</tr>
+<tr>
+<td style="width:15%;border-left:0px;color:#0065b3;border-right:0px;">Default</td>
+<td style="width:85%;border-left:0px;color:black;border-right:0px;"> 使用绑定目标的默认 System.Windows.Data.Binding.Mode 值。 每个依赖属性的默认值都不同。 通常，用户可编辑的控件属性（如文本框和复选框的控件属性）默认为双向绑定，而其他大多数属性默认为单向绑定。
+ 确定依赖属性绑定在默认情况下是单向还是双向的编程方法是：使用 System.Windows.DependencyProperty.GetMetadata(System.Type)
+ 获取属性的属性元数据，然后检查 System.Windows.FrameworkPropertyMetadata.BindsTwoWayByDefault
+ 属性的布尔值。
+</td>
+</tr>
+</table>
+
+<h1 id="UpdateSourceTrigger"><a href="#UpdateSourceTrigger" class="headerlink" title="UpdateSourceTrigger "></a><span style="color:#0366d6;">UpdateSourceTrigger </span></h1><table style="color:#0065b3;width:100%;border:0px;" >
+<tr>
+<td style="width:30%;border-left:0px;border-right:0px;color:black;font-weight:bold;">UpdateSourceTrigger 值</td>
+<td style="width:30%;border-left:0px;border-right:0px;color:black;font-weight:bold;">源值何时进行更新</td>
+<td style="width:40%;border-left:0px;border-right:0px;color:black;font-weight:bold;">文本框的示例方案</td>
+</tr>
+<tr>
+<td style="width:30%;border-left:0px;border-right:0px;">LostFocus（TextBox.Text 的默认值）</td>
+<td style="width:30%;border-left:0px;border-right:0px;">当 TextBox 控件失去焦点时</td>
+<td style="width:40%;border-left:0px;border-right:0px;">一个与验证逻辑（请参见“验证逻辑”一节）关联的 TextBox</td>
+</tr>
+<tr>
+<td style="width:30%;border-left:0px;border-right:0px;">PropertyChanged</td>
+<td style="width:30%;border-left:0px;border-right:0px;">当键入到 TextBox 中时</td>
+<td style="width:40%;border-left:0px;border-right:0px;">聊天室窗口中的 TextBox 控件</td>
+</tr>
+<tr>
+<td style="width:30%;border-left:0px;border-right:0px;">Explicit</td>
+<td style="width:30%;border-left:0px;border-right:0px;">当应用程序调用 UpdateSource 时</td>
+<td style="width:40%;border-left:0px;border-right:0px;">可编辑窗体中的 TextBox 控件（仅当用户单击提交按钮时才更新源值）</td>
+</tr>
+<tr>
+<td style="width:30%;border-left:0px;border-right:0px;">Default</td>
+<td style="width:30%;border-left:0px;border-right:0px;">绑定目标属性的默认 UpdateSourceTrigger 值。</td> 
+<td style="width:40%;border-left:0px;border-right:0px;">大多数依赖属性的默认值为 UpdateSourceTrigger.PropertyChanged，而
+System.Windows.Controls.TextBox.Text 属性的默认值为 UpdateSourceTrigger.LostFocus。</td>
+</tr>
+</table>
+
+<h1 id="将元素绑定到一起"><a href="#将元素绑定到一起" class="headerlink" title="将元素绑定到一起"></a><span style="color:#0366d6;">将元素绑定到一起</span></h1><blockquote>
+<p>数据绑定最简单的方法，就是数据源是WPF元素而且绑定的属性是依赖属性</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Slider</span>  <span class="attr">Name</span>=<span class="string">"sliderFontSize"</span>  <span class="attr">Margin</span>=<span class="string">"3"</span> <span class="attr">IsSnapToTickEnabled</span>=<span class="string">"True"</span>  <span class="attr">Maximum</span>=<span class="string">"40"</span>  <span class="attr">Minimum</span>=<span class="string">"1"</span>  </span></span><br><span class="line"><span class="tag">  <span class="attr">TickFrequency</span>=<span class="string">"1"</span>  <span class="attr">TickPlacement</span>=<span class="string">"TopLeft"</span>  <span class="attr">Value</span>=<span class="string">"10"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">TextBlock</span>  <span class="attr">Name</span>=<span class="string">"lblSampleText"</span>  <span class="attr">Text</span>=<span class="string">"Simple Text"</span>  <span class="attr">Margin</span>=<span class="string">"10"</span> </span></span><br><span class="line"><span class="tag">           <span class="attr">FontSize</span>=<span class="string">"&#123;Binding ElementName=sliderFontSize, Path=Value, Mode=TwoWay&#125;"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="绑定到非元素对象"><a href="#绑定到非元素对象" class="headerlink" title="绑定到非元素对象"></a><span style="color:#0366d6;">绑定到非元素对象</span></h1><h2 id="Source"><a href="#Source" class="headerlink" title="Source "></a><span style="color:#0366d6;">Source </span></h2><blockquote>
+<p>该属性指向一个数据对象的引用</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">TextBlock</span>  <span class="attr">Text</span>=<span class="string">"&#123;Binding Source=&#123;x:Static SystemFonts.IconFontFamily&#125;, Path=LineSpacing&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">TextBlock</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="RelativeSource"><a href="#RelativeSource" class="headerlink" title="RelativeSource "></a><span style="color:#0366d6;">RelativeSource </span></h2><blockquote>
+<p>如果您希望指定相对于绑定目标位置的源，这是有用的。 当您想要将元素的一个属性绑定到同一元素的另一个属性时，或者如果您正在样式或模板中定义绑定，您可能需要使用此属性。</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Style</span> <span class="attr">x:Key</span>=<span class="string">"textBoxInError"</span> <span class="attr">TargetType</span>=<span class="string">"&#123;x:Type TextBox&#125;"</span>&gt;</span></span><br><span class="line"><span class="css">  &lt;<span class="selector-tag">Style</span><span class="selector-class">.Triggers</span>&gt;</span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">Trigger</span> <span class="attr">Property</span>=<span class="string">"Validation.HasError"</span> <span class="attr">Value</span>=<span class="string">"true"</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">Setter</span> <span class="attr">Property</span>=<span class="string">"ToolTip"</span></span></span></span><br><span class="line">        Value="&#123;Binding RelativeSource=&#123;x:Static RelativeSource.Self&#125;,</span><br><span class="line">                        Path=(Validation.Errors)/ErrorContent&#125;"/&gt;</span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">Trigger</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">Style.Triggers</span>&gt;</span></span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="DataContext"><a href="#DataContext" class="headerlink" title="DataContext "></a><span style="color:#0366d6;">DataContext </span></h2><blockquote>
+<p>如果没有使用Source或RelativeSource属性指定源，WPF就从当前元素开始向上查找，查找每个元素的DataContext ，并且使用第一个非空DataContext </p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">DockPanel</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns</span>=<span class="string">"http://schemas.microsoft.com/winfx/2006/xaml/presentation"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:x</span>=<span class="string">"http://schemas.microsoft.com/winfx/2006/xaml"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:c</span>=<span class="string">"clr-namespace:SDKSample"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">DockPanel.Resources</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">c:MyData</span> <span class="attr">x:Key</span>=<span class="string">"myDataSource"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">DockPanel.Resources</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">DockPanel.DataContext</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Binding</span> <span class="attr">Source</span>=<span class="string">"&#123;StaticResource myDataSource&#125;"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">DockPanel.DataContext</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Button</span> <span class="attr">Background</span>=<span class="string">"&#123;Binding Path=ColorName&#125;"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">Width</span>=<span class="string">"150"</span> <span class="attr">Height</span>=<span class="string">"30"</span>&gt;</span>I am bound to be RED!<span class="tag">&lt;/<span class="name">Button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">DockPanel</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/WPF/" rel="tag"># WPF</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/07/26/WPF-5/" rel="next" title="WPF 依赖属性">
+                <i class="fa fa-chevron-left"></i> WPF 依赖属性
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">wang bin</p>
+              <p class="site-description motion-element" itemprop="description">离离原上草 一岁一枯荣</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#绑定模式"><span class="nav-number">1.</span> <span class="nav-text">绑定模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#UpdateSourceTrigger"><span class="nav-number">2.</span> <span class="nav-text">UpdateSourceTrigger </span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#将元素绑定到一起"><span class="nav-number">3.</span> <span class="nav-text">将元素绑定到一起</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#绑定到非元素对象"><span class="nav-number">4.</span> <span class="nav-text">绑定到非元素对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Source"><span class="nav-number">4.1.</span> <span class="nav-text">Source </span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RelativeSource"><span class="nav-number">4.2.</span> <span class="nav-text">RelativeSource </span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DataContext"><span class="nav-number">4.3.</span> <span class="nav-text">DataContext </span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wang bin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
